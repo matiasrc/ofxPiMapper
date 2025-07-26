@@ -111,7 +111,7 @@ bool SettingsLoader::load(
 							}
 						}
                         
-                        if(typeEnum == SourceType::SOURCE_TYPE_FBO && sourceName != "Syphon Source" ){
+                        if(typeEnum == SourceType::SOURCE_TYPE_FBO && sourceName != "Video server" ){
                             // Attempt to set loop for this type of source
                             bool loop = xmlSettings->getValue("source-loop", true);
                             string sound = xmlSettings->getValue("source-sound", "");
@@ -161,7 +161,7 @@ bool SettingsLoader::load(
                         triangleSurface->setOscAddress(sourceOscAddress);//AGREGADO MATIAS 07.2024
                         triangleSurface->setAssignedKey(sourceAssignedKey);//AGREGADO MATIAS 07.2024
                         if(triangleSurface->getSource()->getType() == SOURCE_TYPE_FBO){
-                            if(source->getName() != "Syphon Source"){
+                            if(source->getName() != "Video server"){
                                 FboSource * sec = dynamic_cast<FboSource *>(source);
                                 sec->setSpeed(speed);
                             }
@@ -175,7 +175,7 @@ bool SettingsLoader::load(
                         quadSurface->setOscAddress(sourceOscAddress);//AGREGADO MATIAS 07.2024
                         quadSurface->setAssignedKey(sourceAssignedKey);//AGREGADO MATIAS 07.2024
                         if(quadSurface->getSource()->getType() == SOURCE_TYPE_FBO){
-                            if(source->getName() != "Syphon Source"){
+                            if(source->getName() != "Video server"){
                                 Secuencia * sec = dynamic_cast<Secuencia *>(source);
                                 //FboSource * sec = dynamic_cast<FboSource *>(source);
                                 sec->setSpeed(speed);
@@ -191,7 +191,7 @@ bool SettingsLoader::load(
                         circleSurface->setOscAddress(sourceOscAddress);//AGREGADO MATIAS 07.2024
                         circleSurface->setAssignedKey(sourceAssignedKey);//AGREGADO MATIAS 07.2024
                         if(circleSurface->getSource()->getType() == SOURCE_TYPE_FBO){
-                            if(source->getName() != "Syphon Source"){
+                            if(source->getName() != "Video server"){
                                 FboSource * sec = dynamic_cast<FboSource *>(source);
                                 sec->setSpeed(speed);
                             }
@@ -205,7 +205,7 @@ bool SettingsLoader::load(
                         gridWarpSurface->setOscAddress(sourceOscAddress);//AGREGADO MATIAS 07.2024
                         gridWarpSurface->setAssignedKey(sourceAssignedKey);//AGREGADO MATIAS 07.2024
                         if(gridWarpSurface->getSource()->getType() == SOURCE_TYPE_FBO){
-                            if(source->getName() != "Syphon Source"){
+                            if(source->getName() != "Video server"){
                                 FboSource * sec = dynamic_cast<FboSource *>(source);
                                 sec->setSpeed(speed);
                             }
@@ -219,7 +219,7 @@ bool SettingsLoader::load(
                         hexagonSurface->setOscAddress(sourceOscAddress);//AGREGADO MATIAS 07.2024
                         hexagonSurface->setAssignedKey(sourceAssignedKey);//AGREGADO MATIAS 07.2024
                         if(hexagonSurface->getSource()->getType() == SOURCE_TYPE_FBO){
-                            if(source->getName() != "Syphon Source"){
+                            if(source->getName() != "Video server"){
                                 FboSource * sec = dynamic_cast<FboSource *>(source);
                                 sec->setSpeed(speed);
                             }
@@ -302,7 +302,7 @@ bool SettingsLoader::save(SurfaceManager & surfaceManager, std::string fileName)
 			VideoSource * vid = dynamic_cast<VideoSource *>(surface->getSource());
 			xmlSettings->addValue("source-loop", vid->getLoop());
 		}
-        if(surface->getSource()->getType() == SOURCE_TYPE_FBO && sourceName != "Syphon Source" ){
+        if(surface->getSource()->getType() == SOURCE_TYPE_FBO && sourceName != "Video server" ){
             //FboSource * sec = dynamic_cast<FboSource *>(surface->getSource());
             Secuencia * sec = dynamic_cast<Secuencia *>(surface->getSource());
             xmlSettings->addValue("source-loop", sec->getLoop());
@@ -321,7 +321,7 @@ bool SettingsLoader::save(SurfaceManager & surfaceManager, std::string fileName)
         xmlSettings->addValue("oscAddress", oscAddress);
         
         if(surface->getSource()->getType() == SOURCE_TYPE_FBO){
-            if(surface->getSource()->getName() != "Syphon Source"){
+            if(surface->getSource()->getName() != "Video server"){
                 FboSource * sec = dynamic_cast<FboSource *>(surface->getSource());
                 xmlSettings->addValue("speed", sec->getSpeed());
             }
