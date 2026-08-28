@@ -300,41 +300,53 @@ void ofxPiMapper::resume() {
 
 //----INICIO AGREGADO MATIAS 22.07.2024
 void ofxPiMapper::playForSurface(unsigned int i) {
+    if (i >= getNumSurfaces()) {
+        ofLogWarning("ofxPiMapper") << "Cannot play non-existent surface " << i;
+        return;
+    }
     ofx::piMapper::BaseSource * s =
         _application.getSurfaceManager()->getActivePreset()->getSurfaces().at(i)->getSource();
-    if(s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_VIDEO || ofx::piMapper::SourceType::SOURCE_TYPE_FBO){
-        //ofx::piMapper::VideoSource * video = dynamic_cast<ofx::piMapper::VideoSource *>(s);
-        //video->play();
+    if(s != nullptr && (s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_VIDEO ||
+                        s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_FBO)){
         s->play();
     }
 }
 
 void ofxPiMapper::stopForSurface(unsigned int i) {
+    if (i >= getNumSurfaces()) {
+        ofLogWarning("ofxPiMapper") << "Cannot stop non-existent surface " << i;
+        return;
+    }
     ofx::piMapper::BaseSource * s =
         _application.getSurfaceManager()->getActivePreset()->getSurfaces().at(i)->getSource();
-    if(s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_VIDEO || ofx::piMapper::SourceType::SOURCE_TYPE_FBO){
-        //ofx::piMapper::VideoSource * video = dynamic_cast<ofx::piMapper::VideoSource *>(s);
-        //video->stop();
+    if(s != nullptr && (s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_VIDEO ||
+                        s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_FBO)){
         s->stop();
     }
 }
 
 void ofxPiMapper::pauseForSurface(unsigned int i) {
+    if (i >= getNumSurfaces()) {
+        ofLogWarning("ofxPiMapper") << "Cannot pause non-existent surface " << i;
+        return;
+    }
     ofx::piMapper::BaseSource * s =
         _application.getSurfaceManager()->getActivePreset()->getSurfaces().at(i)->getSource();
-    if(s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_VIDEO || ofx::piMapper::SourceType::SOURCE_TYPE_FBO) {
-        //ofx::piMapper::VideoSource * video = dynamic_cast<ofx::piMapper::VideoSource *>(s);
-        //video->pause();
+    if(s != nullptr && (s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_VIDEO ||
+                        s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_FBO)) {
         s->pause();
     }
 }
 
 void ofxPiMapper::resumeForSurface(unsigned int i) {
+    if (i >= getNumSurfaces()) {
+        ofLogWarning("ofxPiMapper") << "Cannot resume non-existent surface " << i;
+        return;
+    }
     ofx::piMapper::BaseSource * s =
         _application.getSurfaceManager()->getActivePreset()->getSurfaces().at(i)->getSource();
-    if(s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_VIDEO || ofx::piMapper::SourceType::SOURCE_TYPE_FBO) {
-        //ofx::piMapper::VideoSource * video = dynamic_cast<ofx::piMapper::VideoSource *>(s);
-        //video->resume();
+    if(s != nullptr && (s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_VIDEO ||
+                        s->getType() == ofx::piMapper::SourceType::SOURCE_TYPE_FBO)) {
         s->resume();
     }
 }

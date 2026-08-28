@@ -12,7 +12,7 @@ class FboSource : public BaseSource {
 
 	public:
 		FboSource();
-		~FboSource();
+		~FboSource() override;
 
 		// Override these in your custom FBO source
 		virtual void setup(){}
@@ -34,7 +34,7 @@ class FboSource : public BaseSource {
 		void drawFbo();
 	
 		// The only method from BaseSource to be overriden
-		void clear();
+		void clear() override;
 
 		// App listeners
 		void setDisableDraw(bool b); // Use in cases with external ofFbo

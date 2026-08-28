@@ -85,7 +85,7 @@ void FboSource::clear(){
 }
 
 int FboSource::getWidth(){
-	if(fbo->isAllocated()){
+	if(fbo != 0 && fbo->isAllocated()){
 		return fbo->getWidth();
 	}else{
 		return 0;
@@ -93,7 +93,7 @@ int FboSource::getWidth(){
 }
 
 int FboSource::getHeight(){
-	if(fbo->isAllocated()){
+	if(fbo != 0 && fbo->isAllocated()){
 		return fbo->getHeight();
 	}else{
 		return 0;
