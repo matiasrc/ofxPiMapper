@@ -7,7 +7,7 @@
 #include "DeselectSurfaceCmd.h"
 #include "MvSurfaceVertCmd.h"
 #include "SurfaceType.h"
-#include "Gui.h"
+#include "Gui/Gui.h"
 #include "ScaleWidget.h"
 #include "Vec2.h"
 #include "Vec3.h"

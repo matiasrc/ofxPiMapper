@@ -22,6 +22,8 @@ class FboSource : public BaseSource {
         virtual int getSpeed() {return 24;}  // ----Agregado Matias 22.07.2024
         virtual void setLoop(bool loop){};      // ----Agregado Matias 22.07.2024
         virtual bool getLoop(){return true;}                 // ----Agregado Matias 22.07.2024
+        virtual bool setAudioTrack(const std::string& audioPath){ return false; }
+        virtual std::string getAudioTrack(){ return ""; }
 
 		// We use this as replacement of draw internally in ofxPiMapper
 		// to populate the FBO texture that then can be drawn again by

@@ -10,7 +10,7 @@
 #include "FboSource.h"
 #include "Info.h"
 #include "SurfaceStack.h"
-#include "Gui.h"
+#include "Gui/Gui.h"
 #include "Vec2.h"
 
 // Commands

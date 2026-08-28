@@ -12,7 +12,7 @@
 #include "MvAllTexCoordsCmd.h"
 #include "SaveTexCoordPosCmd.h"
 #include "SelTexCoordCmd.h"
-#include "Gui.h"
+#include "Gui/Gui.h"
 #include "Vec2.h"
 
 namespace ofx {

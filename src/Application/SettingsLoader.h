@@ -10,7 +10,6 @@
 #include "SourceTypeHelper.h"
 #include "Vec2.h"
 #include "Vec3.h"
-#include "Secuencia.h"
 
 namespace ofx {
 namespace piMapper {

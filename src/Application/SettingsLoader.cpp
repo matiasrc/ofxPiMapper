@@ -115,10 +115,11 @@ bool SettingsLoader::load(
                             // Attempt to set loop for this type of source
                             bool loop = xmlSettings->getValue("source-loop", true);
                             string sound = xmlSettings->getValue("source-sound", "");
-                            Secuencia * sec = dynamic_cast<Secuencia *>(source);
-                            //FboSource * sec = dynamic_cast<FboSource *>(source);
-                            sec->setLoop(loop);
-                            if(sound != "") sec->setAudioTrack(sound);
+                            FboSource * sec = dynamic_cast<FboSource *>(source);
+                            if(sec != nullptr){
+                                sec->setLoop(loop);
+                                if(sound != "") sec->setAudioTrack(sound);
+                            }
                         }
 					}
 		
@@ -176,9 +177,10 @@ bool SettingsLoader::load(
                         quadSurface->setAssignedKey(sourceAssignedKey);//AGREGADO MATIAS 07.2024
                         if(quadSurface->getSource()->getType() == SOURCE_TYPE_FBO){
                             if(source->getName() != "Video server"){
-                                Secuencia * sec = dynamic_cast<Secuencia *>(source);
-                                //FboSource * sec = dynamic_cast<FboSource *>(source);
-                                sec->setSpeed(speed);
+                                FboSource * sec = dynamic_cast<FboSource *>(source);
+                                if(sec != nullptr){
+                                    sec->setSpeed(speed);
+                                }
                             }
                         }
 					}
@@ -303,10 +305,11 @@ bool SettingsLoader::save(SurfaceManager & surfaceManager, std::string fileName)
 			xmlSettings->addValue("source-loop", vid->getLoop());
 		}
         if(surface->getSource()->getType() == SOURCE_TYPE_FBO && sourceName != "Video server" ){
-            //FboSource * sec = dynamic_cast<FboSource *>(surface->getSource());
-            Secuencia * sec = dynamic_cast<Secuencia *>(surface->getSource());
-            xmlSettings->addValue("source-loop", sec->getLoop());
-            xmlSettings->addValue("source-sound", sec->getAudioTrack());
+            FboSource * sec = dynamic_cast<FboSource *>(surface->getSource());
+            if(sec != nullptr){
+                xmlSettings->addValue("source-loop", sec->getLoop());
+                xmlSettings->addValue("source-sound", sec->getAudioTrack());
+            }
         }
 		
 		xmlSettings->popTag(); // source

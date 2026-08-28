@@ -4,7 +4,7 @@
 #include "BaseSurface.h"
 #include "SourcesEditorWidget.h"
 #include "MediaServer.h"
-#include "Gui.h"
+#include "Gui/Gui.h"
 
 namespace ofx {
 namespace piMapper {
@@ -34,4 +34,3 @@ class SetNextSourceCmd : public BaseUndoCmd {
 
 } // namespace piMapper
 } // namespace ofx
-

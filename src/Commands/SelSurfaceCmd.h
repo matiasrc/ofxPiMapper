@@ -7,7 +7,7 @@
 #include "BaseCmd.h"
 #include "BaseSurface.h"
 #include "SurfaceManager.h"
-#include "Gui.h"
+#include "Gui/Gui.h"
 
 namespace ofx {
 namespace piMapper {
@@ -29,4 +29,3 @@ class SelSurfaceCmd : public BaseUndoCmd {
 
 } // namespace piMapper
 } // namespace ofx
-

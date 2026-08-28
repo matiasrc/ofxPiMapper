@@ -8,7 +8,7 @@
 #include "BaseSurface.h"
 #include "SurfaceStack.h"
 #include "SurfaceManager.h"
-#include "Gui.h"
+#include "Gui/Gui.h"
 
 namespace ofx {
 namespace piMapper {
@@ -30,4 +30,3 @@ class ClearSurfacesCmd : public BaseUndoCmd {
 
 } // namespace piMapper
 } // namespace ofx
-

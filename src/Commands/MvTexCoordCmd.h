@@ -6,7 +6,7 @@
 
 #include "BaseCmd.h"
 #include "CircleJoint.h"
-#include "Gui.h"
+#include "Gui/Gui.h"
 #include "Vec2.h"
 
 namespace ofx {
@@ -28,4 +28,3 @@ class MvTexCoordCmd : public BaseUndoCmd {
 
 } // namespace piMapper
 } // namespace ofx
-

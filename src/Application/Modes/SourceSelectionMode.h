@@ -4,7 +4,7 @@
 #include "ofEvents.h"
 #include "ofLog.h"
 #include "ofGraphics.h"
-#include "Gui.h"
+#include "Gui/Gui.h"
 
 namespace ofx {
 namespace piMapper {
