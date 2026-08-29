@@ -214,6 +214,10 @@ bool ofxPiMapper::loadProject(std::string filename){
 	return _application.loadXmlSettings(filename);
 }
 
+const std::vector<std::string> & ofxPiMapper::getProjectWarnings() const {
+	return _application.getProjectWarnings();
+}
+
 unsigned int ofxPiMapper::getNumPresets(){
 	return _application.getSurfaceManager()->getNumPresets();
 }

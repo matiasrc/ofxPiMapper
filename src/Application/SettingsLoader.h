@@ -25,6 +25,7 @@ class SettingsLoader {
 		bool create(std::string fileName);
 	
 		std::string getLastLoadedFilename(){ return _lastLoadedFilename; };
+		const std::vector<std::string> & getLoadWarnings() const { return _loadWarnings; }
 	
 	private:
 		static SettingsLoader * _instance;
@@ -37,6 +38,7 @@ class SettingsLoader {
 		BaseSurface * getHexagonSurface(ofxXmlSettings * xmlSettings);
 	
 		std::string _lastLoadedFilename;
+		std::vector<std::string> _loadWarnings;
 };
 
 } // namespace piMapper

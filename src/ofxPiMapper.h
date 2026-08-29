@@ -44,6 +44,7 @@ class ofxPiMapper {
 		// Project
 		void saveProject();
 		bool loadProject(std::string filename);
+		const std::vector<std::string> & getProjectWarnings() const;
 
 		// Presets
 		unsigned int getNumPresets();
@@ -111,4 +112,3 @@ class ofxPiMapper {
 	//private:
 		ofx::piMapper::Application _application;
 };
-

@@ -55,7 +55,11 @@ void Application::update(){
 	if(_state != PresentationMode::instance()){
 		float timeNow = ofGetElapsedTimef();
 		if(timeNow - _lastSaveTime > _autoSaveInterval){
-			saveProject();
+			if(getProjectWarnings().empty()){
+				saveProject();
+			}else{
+				ofLogWarning("Application::update()") << "Autosave skipped because project resources are missing";
+			}
 			_lastSaveTime = timeNow;
 		}
 	}
@@ -230,6 +234,10 @@ void Application::togglePerspective(){
 }
 
 void Application::saveProject(){
+	if(!getProjectWarnings().empty()){
+		ofLogWarning("Application::saveProject") << "Project save skipped because project resources are missing";
+		return;
+	}
 	ofLogNotice("Application::saveProject", "Saving project...");
 	_surfaceManager.saveXmlSettings(SettingsLoader::instance()->getLastLoadedFilename());
 }
@@ -291,6 +299,10 @@ bool Application::loadXmlSettings(std::string fileName){
 		return false;
 	}
 	return true;
+}
+
+const std::vector<std::string> & Application::getProjectWarnings() const {
+	return SettingsLoader::instance()->getLoadWarnings();
 }
 
 void Application::selectSurface(int i){

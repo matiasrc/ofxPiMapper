@@ -1,5 +1,7 @@
 #include "SettingsLoader.h"
 
+#include <algorithm>
+
 namespace ofx {
 namespace piMapper {
 
@@ -22,19 +24,12 @@ bool SettingsLoader::load(
 	std::string fileName){
 
 	ofxXmlSettings * xmlSettings = new ofxXmlSettings();
-	std::string sourceType = "";
-	std::string sourceName = "";
-    
-    std::string sourceOscAddress = "";  //AGREGADO MATIAS 07.2024
-    char sourceAssignedKey = '\0';      //AGREGADO MATIAS 07.2024
-    int speed = 24;                 //AGREGADO MATIAS 07.2024
-
-	BaseSource * source = 0;
-
 	if(!xmlSettings->load(fileName)){
 		ofLogWarning("SettingsLoader::load()") << "Could not load XML settings";
 		return false;
 	}
+
+	_loadWarnings.clear();
 
 	if(!xmlSettings->tagExists("surfaces")){
 		xmlSettings->addTag("surfaces");
@@ -57,6 +52,13 @@ bool SettingsLoader::load(
 		int numSurfaces = xmlSettings->getNumTags("surface");
 		for(int i = 0; i < numSurfaces; i++){
 			if(xmlSettings->tagExists("surface", i)){
+				std::string sourceType = "";
+				std::string sourceName = "";
+				std::string sourceOscAddress = "";
+				char sourceAssignedKey = '\0';
+				int speed = 24;
+				BaseSource * source = nullptr;
+				SourceType typeEnum = SourceType::SOURCE_TYPE_NONE;
 
 				SurfaceType type = SurfaceType::NONE;
 				if(xmlSettings->attributeExists("surface", "type")){
@@ -73,44 +75,51 @@ bool SettingsLoader::load(
 					sourceName = xmlSettings->getValue("source-name", "");
                                     
 					if(sourceName != "" && sourceName != "none" && sourceType != ""){
+						if(sourceType != SOURCE_TYPE_NAME_IMAGE &&
+						   sourceType != SOURCE_TYPE_NAME_VIDEO &&
+						   sourceType != SOURCE_TYPE_NAME_FBO){
+							std::string warning = "Tipo de fuente no válido: " + sourceType + " (superficie " + ofToString(i + 1) + ")";
+							_loadWarnings.push_back(warning);
+							ofLogWarning("SettingsLoader::load()") << warning;
+						} else {
+							typeEnum = SourceTypeHelper::GetSourceTypeHelperEnum(sourceType);
+							if(typeEnum == SourceType::SOURCE_TYPE_FBO){
+								const auto fboNames = mediaServer.getFboSourceNames();
+								if(std::find(fboNames.begin(), fboNames.end(), sourceName) == fboNames.end()){
+									std::string warning = "Fuente interna no disponible: " + sourceName + " (superficie " + ofToString(i + 1) + ")";
+									_loadWarnings.push_back(warning);
+									ofLogWarning("SettingsLoader::load()") << warning;
+								} else {
+									source = mediaServer.loadMedia(sourceName, typeEnum);
+								}
+							}else{
+								bool absolutePathSwitch = false;
+								#ifdef TARGET_RASPBERRY_PI
+									absolutePathSwitch = true;
+								#endif
 
-						// Load source depending on type
-						SourceType typeEnum = SourceTypeHelper::GetSourceTypeHelperEnum(sourceType);
-						if(typeEnum == SourceType::SOURCE_TYPE_FBO){
-				
-							// Load FBO source using sourceName
-							source = mediaServer.loadMedia(sourceName, typeEnum);
-						}else{
-				
-							// relative pathss as default, absolute Paths for RASPI
-							bool absolutePathSwitch = false;
-							#ifdef TARGET_RASPBERRY_PI
-								absolutePathSwitch = true;
-							#endif
+								std::string dir = mediaServer.getDefaultMediaDir(typeEnum);
+								std::stringstream pathss;
+								pathss << ofToDataPath(dir, absolutePathSwitch) << sourceName;
+								std::string sourcePath = pathss.str();
 
-							// Construct full path
-							std::string dir = mediaServer.getDefaultMediaDir(typeEnum);
-							std::stringstream pathss;
-							pathss << ofToDataPath(dir, absolutePathSwitch) << sourceName;
-							std::string sourcePath = pathss.str();
-				
-							// Check if file exists
-							// Continue for loop if not
-							if(!ofFile::doesFileExist(sourcePath)){
-								continue;
-							}
-				
-							// Load media by using full path
-							source = mediaServer.loadMedia(sourcePath, typeEnum);
-							
-							if(typeEnum == SourceType::SOURCE_TYPE_VIDEO ){
-								// Attempt to set loop for this type of source
-								bool loop = xmlSettings->getValue("source-loop", true);
-								VideoSource * vid = dynamic_cast<VideoSource *>(source);
-								vid->setLoop(loop);
+								if(!ofFile::doesFileExist(sourcePath)){
+									std::string warning = "Archivo no disponible: " + sourceName + " (superficie " + ofToString(i + 1) + ")";
+									_loadWarnings.push_back(warning);
+									ofLogWarning("SettingsLoader::load()") << warning;
+								} else {
+									source = mediaServer.loadMedia(sourcePath, typeEnum);
+									if(typeEnum == SourceType::SOURCE_TYPE_VIDEO ){
+										bool loop = xmlSettings->getValue("source-loop", true);
+										VideoSource * vid = dynamic_cast<VideoSource *>(source);
+										if(vid != nullptr){
+											vid->setLoop(loop);
+										}
+									}
+								}
 							}
 						}
-                        
+
                         if(typeEnum == SourceType::SOURCE_TYPE_FBO && sourceName != "Video server" ){
                             // Attempt to set loop for this type of source
                             bool loop = xmlSettings->getValue("source-loop", true);
@@ -118,7 +127,15 @@ bool SettingsLoader::load(
                             FboSource * sec = dynamic_cast<FboSource *>(source);
                             if(sec != nullptr){
                                 sec->setLoop(loop);
-                                if(sound != "") sec->setAudioTrack(sound);
+                                if(sound != ""){
+                                    if(ofFile::doesFileExist(std::string(DEFAULT_SOUNDS_DIR) + sound)){
+                                        sec->setAudioTrack(sound);
+                                    }else{
+                                        std::string warning = "Audio no disponible: " + sound + " (superficie " + ofToString(i + 1) + ")";
+                                        _loadWarnings.push_back(warning);
+                                        ofLogWarning("SettingsLoader::load()") << warning;
+                                    }
+                                }
                             }
                         }
 					}

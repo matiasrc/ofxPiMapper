@@ -96,6 +96,7 @@ class Application {
 		void togglePerspective();
 		void saveProject();
 		bool loadXmlSettings(std::string fileName);
+		const std::vector<std::string> & getProjectWarnings() const;
 
 		bool isShiftKeyDown();
 		bool toggleShift();
