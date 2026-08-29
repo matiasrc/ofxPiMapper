@@ -234,13 +234,13 @@ void Application::togglePerspective(){
 	}
 }
 
-void Application::saveProject(){
+bool Application::saveProject(){
 	if(!getProjectWarnings().empty()){
 		ofLogWarning("Application::saveProject") << "Project save skipped because project resources are missing";
-		return;
+		return false;
 	}
 	ofLogNotice("Application::saveProject", "Saving project...");
-	_surfaceManager.saveXmlSettings(SettingsLoader::instance()->getLastLoadedFilename());
+	return _surfaceManager.saveXmlSettings(SettingsLoader::instance()->getLastLoadedFilename());
 }
 
 void Application::setAutoSaveEnabled(bool enabled){

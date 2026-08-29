@@ -34,7 +34,7 @@ class SurfaceManager {
 		void removeSurface(int i);
 		void deleteSurface(BaseSurface * surface);
 		void deselectSurface();
-		void saveXmlSettings(std::string fileName);
+		bool saveXmlSettings(std::string fileName);
 		void setMediaServer(MediaServer * newMediaServer);
 		void clearPresets();
 		

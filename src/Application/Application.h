@@ -94,7 +94,7 @@ class Application {
 		void setInfoText(std::string text);
 		void toggleInfo();
 		void togglePerspective();
-		void saveProject();
+		bool saveProject();
 		void setAutoSaveEnabled(bool enabled);
 		bool loadXmlSettings(std::string fileName);
 		const std::vector<std::string> & getProjectWarnings() const;

@@ -378,7 +378,17 @@ bool SettingsLoader::save(SurfaceManager & surfaceManager, std::string fileName)
 
 	} // for
 
-	return xmlSettings->save(fileName);
+	const std::string temporaryFileName = fileName + ".tmp";
+	if(!xmlSettings->save(temporaryFileName)){
+		ofLogError("SettingsLoader::save") << "Could not write temporary XML settings";
+		return false;
+	}
+	if(!ofFile::moveFromTo(temporaryFileName, fileName, true, true)){
+		ofFile::removeFile(temporaryFileName);
+		ofLogError("SettingsLoader::save") << "Could not replace XML settings";
+		return false;
+	}
+	return true;
 }
 
 bool SettingsLoader::create(std::string fileName){

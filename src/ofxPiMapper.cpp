@@ -210,8 +210,8 @@ void ofxPiMapper::shutdown(){
 	_application.shutdown();
 }
 
-void ofxPiMapper::saveProject(){
-	_application.saveProject();
+bool ofxPiMapper::saveProject(){
+	return _application.saveProject();
 }
 
 bool ofxPiMapper::loadProject(std::string filename){

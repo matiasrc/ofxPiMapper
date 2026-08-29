@@ -122,20 +122,21 @@ void SurfaceManager::clearPresets(){
 }
 
 // TODO: Do serious adjustment here. We need to save all presets. Not just the active one.
-void SurfaceManager::saveXmlSettings(std::string fileName){
+bool SurfaceManager::saveXmlSettings(std::string fileName){
 	if(_presets.size() <= 0){
 		ofLogWarning(
 			"SurfaceManager::saveXmlSettings",
 			"Can not save XML settings. No presets.");
-		return;
+		return false;
 	}
 	
 	if(mediaServer == 0){
 		ofLogFatalError("SurfaceManager") << "Media server not set";
 		exit(EXIT_FAILURE);
+		return false;
 	}
 	
-	SettingsLoader::instance()->save(*this, fileName);
+	return SettingsLoader::instance()->save(*this, fileName);
 }
 
 // TODO: We need to load all presets. Not just the active one.

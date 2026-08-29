@@ -42,7 +42,7 @@ class ofxPiMapper {
 		void toggleLayerPanel();
 
 		// Project
-		void saveProject();
+		bool saveProject();
 		void setAutoSaveEnabled(bool enabled);
 		bool loadProject(std::string filename);
 		const std::vector<std::string> & getProjectWarnings() const;
