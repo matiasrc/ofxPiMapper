@@ -513,54 +513,64 @@ void Application::setFboSource(std::string sourceId){
 }
 
 void Application::setVideoSource(std::string fileName, bool loop){
-	vector<std::string> loadedVideos = getMediaServer()->getVideoNames();
-	for(auto i = 0; i < loadedVideos.size(); i++){
-		if(ofIsStringInString(loadedVideos[i], fileName)){
-			if(getSurfaceManager()->getSelectedSurface() != 0){
-				BaseSource * source = getSurfaceManager()->getSelectedSurface()->getSource();
-				
-				if(source->getType() == SOURCE_TYPE_VIDEO){
-					VideoSource * video = dynamic_cast<VideoSource *>(source);
-					video->stop();
-				}
-				
-				getCmdManager()->exec(
-		 			new SetVideoSourceCmd(
-						getMediaServer()->getVideoPaths()[i],
-						loop,
-		  				getSurfaceManager()->getSelectedSurface(),
-		  				&Gui::instance()->getSourcesEditorWidget()));
-			}else{
-				getCmdManager()->exec(new SelNextSurfaceCmd(getSurfaceManager()));
+	bool absolutePathSwitch = false;
+	#ifdef TARGET_RASPBERRY_PI
+		absolutePathSwitch = true;
+	#endif
+	const std::string videoPath = ofToDataPath(std::string(DEFAULT_VIDEOS_DIR) + fileName, absolutePathSwitch);
+	if(!ofFile::doesFileExist(videoPath)){
+		ofLogWarning("Application::setVideoSource") << "Video does not exist: " << fileName;
+		return;
+	}
+
+	if(getSurfaceManager()->getSelectedSurface() != 0){
+		BaseSource * source = getSurfaceManager()->getSelectedSurface()->getSource();
+		if(source->getType() == SOURCE_TYPE_VIDEO){
+			VideoSource * video = dynamic_cast<VideoSource *>(source);
+			if(video != nullptr){
+				video->stop();
 			}
-			break;
 		}
+
+		getCmdManager()->exec(
+			new SetVideoSourceCmd(
+				videoPath,
+				loop,
+				getSurfaceManager()->getSelectedSurface(),
+				&Gui::instance()->getSourcesEditorWidget()));
+	}else{
+		getCmdManager()->exec(new SelNextSurfaceCmd(getSurfaceManager()));
 	}
 }
 
 void Application::setImageSource(std::string fileName){
-	vector<std::string> loadedImages = getMediaServer()->getImageNames();
-	for(auto i = 0; i < loadedImages.size(); i++){
-		if(ofIsStringInString(loadedImages[i], fileName)){
-			if(getSurfaceManager()->getSelectedSurface() != 0){
-				BaseSource * source = getSurfaceManager()->getSelectedSurface()->getSource();
-				
-				if(source->getType() == SOURCE_TYPE_VIDEO){
-					VideoSource * video = dynamic_cast<VideoSource *>(source);
-					video->stop();
-				}
-			
-				getCmdManager()->exec(
-		 			new SetSourceCmd(
-						SourceType::SOURCE_TYPE_IMAGE,
-						getMediaServer()->getImagePaths()[i],
-		  				getSurfaceManager()->getSelectedSurface(),
-		  				&Gui::instance()->getSourcesEditorWidget()));
-			}else{
-				getCmdManager()->exec(new SelNextSurfaceCmd(getSurfaceManager()));
+	bool absolutePathSwitch = false;
+	#ifdef TARGET_RASPBERRY_PI
+		absolutePathSwitch = true;
+	#endif
+	const std::string imagePath = ofToDataPath(std::string(DEFAULT_IMAGES_DIR) + fileName, absolutePathSwitch);
+	if(!ofFile::doesFileExist(imagePath)){
+		ofLogWarning("Application::setImageSource") << "Image does not exist: " << fileName;
+		return;
+	}
+
+	if(getSurfaceManager()->getSelectedSurface() != 0){
+		BaseSource * source = getSurfaceManager()->getSelectedSurface()->getSource();
+		if(source->getType() == SOURCE_TYPE_VIDEO){
+			VideoSource * video = dynamic_cast<VideoSource *>(source);
+			if(video != nullptr){
+				video->stop();
 			}
-			break;
 		}
+
+		getCmdManager()->exec(
+			new SetSourceCmd(
+				SourceType::SOURCE_TYPE_IMAGE,
+				imagePath,
+				getSurfaceManager()->getSelectedSurface(),
+				&Gui::instance()->getSourcesEditorWidget()));
+	}else{
+		getCmdManager()->exec(new SelNextSurfaceCmd(getSurfaceManager()));
 	}
 }
 
