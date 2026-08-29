@@ -9,6 +9,7 @@ namespace piMapper {
 class SurfaceStack {
 	public:
 		void push_back(BaseSurface * s);
+		void insert(int i, BaseSurface * s);
 		void pop_back();
 		void erase(int i);
 		void swap(int a, int b);

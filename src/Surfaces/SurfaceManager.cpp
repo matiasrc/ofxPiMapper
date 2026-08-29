@@ -1,5 +1,7 @@
 #include "SurfaceManager.h"
 
+#include <algorithm>
+
 namespace ofx {
 namespace piMapper {
 
@@ -30,6 +32,17 @@ void SurfaceManager::addSurface(BaseSurface * surface){
 	}
 
 	_presets[_activePresetIndex]->push_back(surface);
+}
+
+void SurfaceManager::insertSurface(BaseSurface * surface, int index){
+	if(_activePresetIndex < 0){
+		ofLogWarning("SurfaceManager::insertSurface", "Can not add surface. No active preset.");
+		return;
+	}
+
+	SurfaceStack * surfaces = _presets[_activePresetIndex];
+	const int safeIndex = std::max(0, std::min(index, surfaces->size()));
+	surfaces->insert(safeIndex, surface);
 }
 
 void SurfaceManager::removeSelectedSurface(){
@@ -64,9 +77,7 @@ void SurfaceManager::removeSurface(int i){
 		return;
 	}
 	
-	//_presets[_activePresetIndex]->erase(i);
-	_presets[_activePresetIndex]->swap(i, _presets[_activePresetIndex]->size() - 1);
-	_presets[_activePresetIndex]->pop_back();
+	_presets[_activePresetIndex]->erase(i);
 	selectedSurface = 0;
 }
 

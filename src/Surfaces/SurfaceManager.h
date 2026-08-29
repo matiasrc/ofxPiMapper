@@ -28,6 +28,7 @@ class SurfaceManager {
 		void draw();
 	
 		void addSurface(BaseSurface * surface);
+		void insertSurface(BaseSurface * surface, int index);
 		void removeSelectedSurface();
 		void removeSurface();
 		void removeSurface(int i);

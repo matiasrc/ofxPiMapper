@@ -9,6 +9,12 @@ void SurfaceStack::push_back(BaseSurface * s){
 	_surfaces.push_back(s);
 }
 
+void SurfaceStack::insert(int i, BaseSurface * s){
+	ofAddListener(s->verticesChangedEvent, this, &SurfaceStack::onVerticesChanged);
+	ofAddListener(s->vertexChangedEvent, this, &SurfaceStack::onVertexChanged);
+	_surfaces.insert(_surfaces.begin() + i, s);
+}
+
 void SurfaceStack::pop_back(){
 	ofRemoveListener(_surfaces.back()->verticesChangedEvent, this, &SurfaceStack::onVerticesChanged);
 	ofRemoveListener(_surfaces.back()->vertexChangedEvent, this, &SurfaceStack::onVertexChanged);
