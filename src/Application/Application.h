@@ -95,6 +95,7 @@ class Application {
 		void toggleInfo();
 		void togglePerspective();
 		void saveProject();
+		void setAutoSaveEnabled(bool enabled);
 		bool loadXmlSettings(std::string fileName);
 		const std::vector<std::string> & getProjectWarnings() const;
 
@@ -180,6 +181,7 @@ class Application {
 
 		float _lastSaveTime;
 		float _autoSaveInterval;
+		bool _autoSaveEnabled;
 
 		std::string _keySequence;
 

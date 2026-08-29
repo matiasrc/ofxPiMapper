@@ -14,6 +14,10 @@ void ofxPiMapper::draw(){
 	_application.draw();
 }
 
+void ofxPiMapper::setAutoSaveEnabled(bool enabled){
+	_application.setAutoSaveEnabled(enabled);
+}
+
 void ofxPiMapper::keyPressed(int key){
 	ofKeyEventArgs args;
 	args.key = key;

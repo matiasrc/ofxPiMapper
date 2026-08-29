@@ -19,6 +19,7 @@ Application::Application(){
 
 	_lastSaveTime = 0.0f;
 	_autoSaveInterval = 60.0f;
+	_autoSaveEnabled = true;
 	_drawGui = true;
 }
 
@@ -52,7 +53,7 @@ void Application::update(){
 	_state->update(this);
 
 	// Autosave, do it only of the mode is not presentation mode
-	if(_state != PresentationMode::instance()){
+	if(_autoSaveEnabled && _state != PresentationMode::instance()){
 		float timeNow = ofGetElapsedTimef();
 		if(timeNow - _lastSaveTime > _autoSaveInterval){
 			if(getProjectWarnings().empty()){
@@ -240,6 +241,10 @@ void Application::saveProject(){
 	}
 	ofLogNotice("Application::saveProject", "Saving project...");
 	_surfaceManager.saveXmlSettings(SettingsLoader::instance()->getLastLoadedFilename());
+}
+
+void Application::setAutoSaveEnabled(bool enabled){
+	_autoSaveEnabled = enabled;
 }
 
 void Application::setState(ApplicationBaseMode * st){

@@ -43,6 +43,7 @@ class ofxPiMapper {
 
 		// Project
 		void saveProject();
+		void setAutoSaveEnabled(bool enabled);
 		bool loadProject(std::string filename);
 		const std::vector<std::string> & getProjectWarnings() const;
 
