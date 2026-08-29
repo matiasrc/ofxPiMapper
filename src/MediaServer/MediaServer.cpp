@@ -430,6 +430,8 @@ void MediaServer::unloadFboSource(std::string & fboSourceName){
 	if(source->referenceCount <= 0){
 		ofLogNotice("MediaServer") << fboSourceName << " reference count <= 0, removing from loaded sources";
 		source->referenceCount = 0;
+        // A sequence can own an audio player. Stop it when no surface uses this FBO anymore.
+        source->stop();
         source->setActive(false);
 		//source->removeAppListeners();
 		map <std::string, BaseSource *>::iterator it = loadedSources.find(fboSourceName);
